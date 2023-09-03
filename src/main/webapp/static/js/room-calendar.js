@@ -19,7 +19,7 @@ const groupFullNames = {
     // "BFV3 gr2": "Bioinformatics Minor Application Design",
     "BFVB3": "Minor Bioinformatics for the Life Sciences",
     // "BFVF3": "???",
-    "DSLSR": "Master Data Science for Life Sciences",
+    "DSLSR1": "Master Data Science for Life Sciences",
 }
 const coolRooms = {
     11367: "ZP11/D1.07",
