@@ -65,7 +65,7 @@ async function getAllDataForGroups(groups) {
 
 function createFullcalendarEventObject(item) {
     return {
-        title: item["Name"],
+        title: item["Name"].replace("&amp;", "& "),
         start: item["Start"],
         end: item["End"],
         extendedProps: {
