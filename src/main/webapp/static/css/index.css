@@ -3,4 +3,30 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-color: #03FFFF;
+    background-position: top;
+    padding-top: 0;
+}
+
+.opening-hours {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content {
+    min-height: calc(100vh - 50px - 2em);
+    padding-bottom: 2em;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 7px;
+}
+.split-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px
+}
+.item {
+    flex: 0 0 300pt;
 }

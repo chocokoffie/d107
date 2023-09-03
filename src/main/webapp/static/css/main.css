@@ -7,6 +7,9 @@
 body {
     margin: 0;
     padding: 0;
+    font-size: 1em;
+    font-family: sans-serif;
+    line-height: 1.4;
 }
 
 /* Navbar */
@@ -32,4 +35,10 @@ body {
 }
 .navbar a.active {
     background-color: var(--darker-orange);
+}
+
+/* Page layout */
+.inner {
+    padding: 0 10vw;
+    max-width: 151.2rem;
 }

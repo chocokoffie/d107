@@ -7,6 +7,7 @@
   <!--  Stylesheets  -->
   <link rel="stylesheet" type="text/css" href="/static/css/main.css">
   <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/discordInvite.css">
 
   <!--  Website icons  -->
   <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
@@ -24,12 +25,71 @@
 <body>
 <header th:replace="~{fragments :: navbar('home')}"></header>
 
-<div style="text-align: center">
-  <h1>U heeft D1.07 betreden!</h1>
-  <h2>Mooiste lokaal van de Hanze!</h2>
-  <h3>HUTS!</h3>
-  <p>Immunologie is stom >:(</p>
-  <img alt="plopkoek" src="../../static/image/plopkoek.webp" style="width: 100px;">
+<div class="inner content">
+  <div>
+    <img alt="d1.07" src="../../static/image/d107-logo.png" style="width: 200pt;">
+    <h1>U heeft D1.07 betreden!</h1>
+    <h2>Het mooiste lokaal van de Hanze!</h2>
+    <h3>
+      Dit is de onoffici&euml;le offici&euml;le website voor lokaal ZP11/D1.07,<br>
+      die zich in de Van DoorenVeste op de Zernike Campus Groningen bevindt!
+    </h3>
+    <p>Oorspronkelijk als grap gemaakt door een groepje studenten, maar je kan hier nu ook wat serieuze dingen op vinden.</p>
+  </div>
+  <div class="split-content">
+    <div class="opening-hours item">
+      <h2>Openingstijden Van DoorenVeste:</h2>
+      <table>
+        <tbody>
+        <tr>
+          <td>Maandag</td>
+          <td>07.30 - 22.15</td>
+        </tr>
+        <tr>
+          <td>Dinsdag</td>
+          <td>07.30 - 22.15</td>
+        </tr>
+        <tr>
+          <td>Woensdag</td>
+          <td>07.30 - 22.15</td>
+        </tr>
+        <tr>
+          <td>Donderdag</td>
+          <td>07.30 - 22.15</td>
+        </tr>
+        <tr>
+          <td>Vrijdag</td>
+          <td>07.30 - 18.00</td>
+        </tr>
+        <tr>
+          <td>Zaterdag</td>
+          <td>Gesloten</td>
+        </tr>
+        <tr>
+          <td>Zondag</td>
+          <td>Gesloten</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="discord-invite item">
+      <h2>Bio-Informatica Discord server</h2>
+      <p>Een plek waar je vragen kan stellen en kan praten met medestudenten en alumni!</p>
+      <br>
+      <div id="discordInviteBox"></div>
+      <script src="/static/js/discordInvite.js"></script>
+      <script>
+          // https://github.com/Aegis7Gaming/Discord-Invite-JS-HTML-CSS
+          discordInvite.init({
+              inviteCode: 'Je47QTa',
+              title: 'Bio-Informatica',
+              introText: 'Join onze Hanze Bio-Informatica Discord server!'
+          });
+          discordInvite.render();
+      </script>
+    </div>
+  </div>
+  <img alt="plopkoek" src="../../static/image/plopkoek.webp" style="width: 100px; margin: 0 auto; padding-top: 50px;">
 </div>
 </body>
 </html>
