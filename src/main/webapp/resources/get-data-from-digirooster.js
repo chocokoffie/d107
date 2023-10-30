@@ -78,7 +78,7 @@ function createFullcalendarEventObject(item) {
 
 function createResponseObject(eventItems) {
     let timeNow = new Date();
-    timeNow.setHours(timeNow.getHours() + 2);
+    timeNow.setHours(timeNow.getHours() + 1);
     return {
         gatherDate: toUTCString(timeNow),
         dateRange: getDateRange(),
