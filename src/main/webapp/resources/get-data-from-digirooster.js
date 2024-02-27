@@ -98,12 +98,13 @@ function download(content, fileName, contentType) {
 // ========================= MAIN ================================
 // ===============================================================
 const groupList = {
-    BFV1: {year: 1, id: "10763"}, // Year 1
-    BFV2: {year: 2, id: "10762"}, // Year 2
-    BFV3: {year: 3, id: "10768"}, // Year 3
+    BFV1: {year: 1, id: "10763"}, // Bioinformatics Year 1
+    BFV2: {year: 2, id: "10762"}, // Bioinformatics Year 2
+    BFV3: {year: 3, id: "10768"}, // Bioinformatics Year 3
     BFVB3: {year: 3, id: "10197"}, // Minor Bio-Informatica
-    BFVF3: {year: 3, id: "10143"}, // ???
-    DSLSR: {year: 1, id: "10627"}, // Master Data Science for Life Sciences
+    BFVF3: {year: 3, id: "10143"}, // Minor Voeding en Gezondheid
+    DSLSR1: {year: 1, id: "10627"}, // Master Data Science for Life Sciences Year 1
+    DSLSR2: {year: 1, id: "14198"}, // Master Data Science for Life Sciences Year 2
 };
 const coolRooms = [11367, 11368, 11388, 11398, 11399];
 //                 D1.07, D1.08, H1.122,H1.86, H1.88A
