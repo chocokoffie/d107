@@ -19,6 +19,8 @@ function toUTCString(date) {
 }
 
 function getDateRange() {
+    // The amount of weeks in the future calendar events should be collected for
+    let amountOfWeeks = 8;
     // Monday of past week
     let start = setToMonday(new Date());
     start.setHours(2, 0, 0, 0);
@@ -66,6 +68,16 @@ async function getEventDataForGroups(groups) {
     return allEvents;
 }
 
+async function getEventDataForLecturers(lecturerIds) {
+    let allEvents = [];
+    await Promise.all(lecturerIds.map(async (lecturerId) => {
+        let urlPath = `Lecturer/${lecturerId}`;
+        const events = await sendDigiroosterRequest(urlPath, 1);
+        allEvents.push(...events);
+    }));
+    return allEvents;
+}
+
 function createFullCalendarEventObject(item) {
     return {
         title: item["Name"].replace("&amp;", "& "),
@@ -103,25 +115,40 @@ function download(content, fileName, contentType) {
 // ============================================ MAIN ===================================================
 // =====================================================================================================
 const binGroups = [
-    {year: 1, id: 10763},  // BFV1: Bioinformatics Year 1
-    {year: 2, id: 10762},  // BFV2: Bioinformatics Year 2
-    {year: 3, id: 10768},  // BFV3: Bioinformatics Year 3
-    {year: 3, id: 10197},  // BFVB3: Minor Bio-Informatica
-    {year: 3, id: 10143},  // BFVF3: Minor Voeding en Gezondheid
+    {year: 1, id: 10763},  // BFV1:   Bioinformatics Year 1
+    {year: 2, id: 10762},  // BFV2:   Bioinformatics Year 2
+    {year: 3, id: 10768},  // BFV3:   Bioinformatics Year 3
+    {year: 3, id: 10197},  // BFVB3:  Minor Bio-Informatica
+    {year: 3, id: 10143},  // BFVF3:  Minor Voeding en Gezondheid
     {year: 1, id: 10627},  // DSLSR1: Master Data Science for Life Sciences Year 1
     {year: 1, id: 14198},  // DSLSR2: Master Data Science for Life Sciences Year 2
 ];
+const binLecturerIds = [21257, 947,  519,  63,   296,  19886, 242,  25,   818,  19806, 1066, 1000, 2104, 1106, 310,  62]
+//                      BLJA,  BOJP, FEFE, HEMI, KEMC, KRPE,  LADR, NASA, NOMI, OLLO,  PARN, POWE, VEID, WATS, WERD, WIBA
 const binRoomIds = [11367, 11368, 11388, 11398, 11399];
 //                  D1.07, D1.08, H1.122,H1.86, H1.88A
 
 let allBinGroupEvents = [];
 let onlyBinRoomEvents = [];
-let amountOfWeeks = 8;
+let savedEventIds = [];
 
-$.each(await getEventDataForGroups(binGroups), function (index, eventData) {
+$.each(await getEventDataForGroups(binGroups), function (_, eventData) {
     let fullCalendarEvent = createFullCalendarEventObject(eventData);
+    savedEventIds.push(eventData["Id"])
     allBinGroupEvents.push(fullCalendarEvent);
+    if ( binRoomIds.some(roomId => fullCalendarEvent.extendedProps.rooms.includes(roomId)) ) {
+        onlyBinRoomEvents.push(fullCalendarEvent);
+    }
+});
 
+$.each(await getEventDataForLecturers(binLecturerIds), function (_, eventData) {
+    // If the event was already saved skip this iteration
+    if ( savedEventIds.includes(eventData["Id"]) ) { return }
+
+    // Create FullCalendar compatible object and save the event
+    let fullCalendarEvent = createFullCalendarEventObject(eventData);
+    savedEventIds.push(eventData["Id"])
+    allBinGroupEvents.push(fullCalendarEvent);
     if ( binRoomIds.some(roomId => fullCalendarEvent.extendedProps.rooms.includes(roomId)) ) {
         onlyBinRoomEvents.push(fullCalendarEvent);
     }
