@@ -145,8 +145,8 @@ const binGroups = [
     {year: 1, id: 10627},  // DSLSR1: Master Data Science for Life Sciences Year 1
     {year: 1, id: 14198},  // DSLSR2: Master Data Science for Life Sciences Year 2
 ];
-const binLecturerIds = [21257, 947,  519,  63,   296,  19886, 242,  25,   818,  19806, 1066, 1000, 2104, 1106, 310,  62]
-//                      BLJA,  BOJP, FEFE, HEMI, KEMC, KRPE,  LADR, NASA, NOMI, OLLO,  PARN, POWE, VEID, WATS, WERD, WIBA
+const binLecturerIds = [564,  457,  21257, 947,  519,  63,   296,  19886, 242,  1043, 25,   818,  19806, 1066, 1000, 2104, 1106, 310,  62]
+//                      APMA, BABA, BLJA,  BOJP, FEFE, HEMI, KEMC, KRPE,  LADR, LUMF, NASA, NOMI, OLLO,  PARN, POWE, VEID, WATS, WERD, WIBA
 const binRoomIds = [11367, 11368, 11388, 11398, 11399];
 //                  D1.07, D1.08, H1.122,H1.86, H1.88A
 
