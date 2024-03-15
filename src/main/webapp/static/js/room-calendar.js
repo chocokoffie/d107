@@ -77,23 +77,69 @@ $(document).ready(async function () {
         events: onlyCoolRoomsObject.items,
         eventColor: "#6339cc",
         eventDidMount: function(arg) {
+            let eventStartTime = luxon.DateTime.fromJSDate(arg.event.start)
+            let eventEndTime = luxon.DateTime.fromJSDate(arg.event.end)
+            let durationInHours = eventEndTime.diff(eventStartTime, ["hours"]).toObject().hours
+
+            // Return early if the event's duration is very short because no additional information will fit
+            if (durationInHours < 1) { return }
+
             // Collect current event element
             let contentsEl = arg.el.querySelector(".fc-event-title-container");
 
-            // Create and append event group
+            // Add event groups information
             let groupEl = document.createElement("div")
             groupEl.classList.add("event-group");
             groupEl.innerHTML = arg.event.extendedProps.groups.join(", ");
             contentsEl.appendChild(groupEl);
 
-            // Create and append event lecturers
+            // Below a duration of 1.5 hours lecturer information will not fit inside the event element
+            if (durationInHours < 1.5) { return }
+
+            // Create event lecturer information element
+            let eventLecturers = arg.event.extendedProps.lecturers
             let lecturersDivEl = document.createElement("div");
             lecturersDivEl.classList.add("event-lecturers");
-            arg.event.extendedProps.lecturers.forEach( function(lecturer) {
+
+            // If the duration is less than 1 hour and 45 minutes only 1 lecturer can be shown
+            if (durationInHours < 1.75 && eventLecturers.length > 1) {
                 let lecturerEl = document.createElement("i");
-                lecturerEl.innerHTML = lecturer;
+                lecturerEl.innerHTML = `Multiple lecturers (${eventLecturers.length})`;
                 lecturersDivEl.appendChild(lecturerEl);
-            });
+                contentsEl.appendChild(lecturersDivEl);
+                return
+            }
+
+            // Define the amount of lecturers that can be shown for specific duration breakpoints
+            let lecturersShown;
+            if (durationInHours <= 1.75 && eventLecturers.length > 2) {
+                lecturersShown = 1;
+            } else if (durationInHours <= 2 && eventLecturers.length > 3) {
+                lecturersShown = 2;
+            } else if (eventLecturers.length > 4) {
+                lecturersShown = 3;
+            } else {
+                lecturersShown = 4;
+            }
+
+            // Add the lecturers that can be shown
+            for (let index = 0; index < Math.min(eventLecturers.length, lecturersShown); index++) {
+                let lecturerEl = document.createElement("i");
+                lecturerEl.innerHTML = eventLecturers[index];
+                lecturersDivEl.appendChild(lecturerEl);
+            }
+            // eventLecturers.splice(0, lecturersShown).forEach(function (lecturer) {
+            //     let lecturerEl = document.createElement("i");
+            //     lecturerEl.innerHTML = lecturer;
+            //     lecturersDivEl.appendChild(lecturerEl);
+            // });
+            // If needed, notify that there are more lecturers not shown
+            if (lecturersShown < eventLecturers.length) {
+                let moreLecturersEl = document.createElement("i");
+                moreLecturersEl.innerHTML = `and ${eventLecturers.length - lecturersShown} more...`;
+                lecturersDivEl.appendChild(moreLecturersEl);
+            }
+            // Finish up
             contentsEl.appendChild(lecturersDivEl);
         },
         eventClick: function(info) {
