@@ -1,9 +1,12 @@
 // Made by Vincent Talen
-// Use Digirooster API to get all items for BIN classes
+// Makes requests to the Digirooster API to get events for BIN classes/rooms
+//
+// Use by going to the Digirooster website and logging in, then use inspect element and paste this entire script in the console.
+// A popup for a file download should appear shortly after running the code in the console.
 
-// ===============================================================
-// ======================== FUNCTIONS ============================
-// ===============================================================
+// =====================================================================================================
+// =========================================== FUNCTIONS ===============================================
+// =====================================================================================================
 function setToMonday(date) {
     let day = date.getDay() || 7;
     if (day !== 1)
@@ -37,7 +40,7 @@ async function doRequest(requestUrl, requestData) {
     });
 }
 
-async function getAllDataForGroups(groups) {
+async function getEventDataForGroups(groups) {
     // Basic request information
     const baseURL = "https://digirooster.hanze.nl/API/Schedule/Group/";
     const requestData = {
@@ -63,7 +66,7 @@ async function getAllDataForGroups(groups) {
     return allItems;
 }
 
-function createFullcalendarEventObject(item) {
+function createFullCalendarEventObject(item) {
     return {
         title: item["Name"].replace("&amp;", "& "),
         start: item["Start"],
@@ -94,9 +97,9 @@ function download(content, fileName, contentType) {
     a.click();
 }
 
-// ===============================================================
-// ========================= MAIN ================================
-// ===============================================================
+// =====================================================================================================
+// ============================================ MAIN ===================================================
+// =====================================================================================================
 const groupList = {
     BFV1: {year: 1, id: "10763"}, // Bioinformatics Year 1
     BFV2: {year: 2, id: "10762"}, // Bioinformatics Year 2
@@ -106,22 +109,21 @@ const groupList = {
     DSLSR1: {year: 1, id: "10627"}, // Master Data Science for Life Sciences Year 1
     DSLSR2: {year: 1, id: "14198"}, // Master Data Science for Life Sciences Year 2
 };
-const coolRooms = [11367, 11368, 11388, 11398, 11399];
-//                 D1.07, D1.08, H1.122,H1.86, H1.88A
+const binRoomIds = [11367, 11368, 11388, 11398, 11399];
+//                  D1.07, D1.08, H1.122,H1.86, H1.88A
 
-let allItems = [];
-let onlyCoolRooms = [];
+let allBinGroupEvents = [];
+let onlyBinRoomEvents = [];
 let amountOfWeeks = 8;
 
-$.each(await getAllDataForGroups(groupList), function (index, item) {
-    let cleanItem = createFullcalendarEventObject(item);
-    allItems.push(cleanItem);
+$.each(await getEventDataForGroups(groupList), function (index, eventData) {
+    let fullCalendarEvent = createFullCalendarEventObject(eventData);
+    allBinGroupEvents.push(fullCalendarEvent);
 
-    // Filter our 'cool' rooms
-    if ( coolRooms.some(coolRoom => cleanItem.extendedProps.rooms.includes(coolRoom)) ) {
-        onlyCoolRooms.push(cleanItem);
+    if ( binRoomIds.some(roomId => fullCalendarEvent.extendedProps.rooms.includes(roomId)) ) {
+        onlyBinRoomEvents.push(fullCalendarEvent);
     }
 });
 
-// download(JSON.stringify(createResponseObject(allItems)), "all-items.json", "text/plain");
-download(JSON.stringify(createResponseObject(onlyCoolRooms)), "only-cool-rooms.json", "text/plain");
+// download(JSON.stringify(createResponseObject(allBinGroupEvents)), "all-bin-group-calendar-events.json", "text/plain");
+download(JSON.stringify(createResponseObject(onlyBinRoomEvents)), "only-bin-room-calendar-events.json", "text/plain");

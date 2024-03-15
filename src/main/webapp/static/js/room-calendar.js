@@ -22,7 +22,7 @@ const groupFullNames = {
     "DSLSR1": "Master Data Science for Life Sciences Year 1",
     "DSLSR2": "Master Data Science for Life Sciences Year 2",
 }
-const coolRooms = {
+const binRooms = {
     11367: "ZP11/D1.07",
     11368: "ZP11/D1.08",
     11388: "ZP11/H1.122",
@@ -50,7 +50,7 @@ $(document).ready(async function () {
 
     // Fetch calendar events/items
     // const allItems = await fetchJSON("/api/get-all-calendar-items");
-    const onlyCoolRoomsObject = await fetchJSON("/api/get-only-cool-rooms-calendar-items/");
+    const onlyBinRoomEvents = await fetchJSON("/api/get-only-bin-room-calendar-events/");
 
     // Create calendar
     let calendarEl;
@@ -68,13 +68,13 @@ $(document).ready(async function () {
         dayHeaderFormat: "EEE dd/MM",
         slotLabelFormat: myTimeFormat,
         eventTimeFormat: myTimeFormat,
-        validRange: onlyCoolRoomsObject.dateRange,
+        validRange: onlyBinRoomEvents.dateRange,
         headerToolbar: {
             left: "",
             center: "title",
             right: "today prev,next"
         },
-        events: onlyCoolRoomsObject.items,
+        events: onlyBinRoomEvents.items,
         eventColor: "#6339cc",
         eventDidMount: function(arg) {
             let eventStartTime = luxon.DateTime.fromJSDate(arg.event.start)
@@ -166,7 +166,7 @@ $(document).ready(async function () {
             // Rooms
             modalEventRooms.innerHTML = "";
             for (const roomId of info.event.extendedProps.rooms) {
-                modalEventRooms.innerHTML += `<div>${coolRooms[roomId]}</div>`
+                modalEventRooms.innerHTML += `<div>${binRooms[roomId]}</div>`
             }
         },
     })
@@ -188,7 +188,7 @@ $(document).ready(async function () {
     });
 
     // Add an option for each room
-    for (const [roomId, roomName] of Object.entries(coolRooms)) {
+    for (const [roomId, roomName] of Object.entries(binRooms)) {
         const option = document.createElement("option");
         option.textContent = roomName;
         option.value = roomId;
@@ -203,6 +203,6 @@ $(document).ready(async function () {
 
     // Add manual update note with last update time
     let updateNoteEl = document.querySelector("#update-note");
-    let lastUpdateTime = luxon.DateTime.fromISO(onlyCoolRoomsObject.gatherDate).toFormat("dd MMMM yyyy 'at' HH:mm:ss");
+    let lastUpdateTime = luxon.DateTime.fromISO(onlyBinRoomEvents.gatherDate).toFormat("dd MMMM yyyy 'at' HH:mm:ss");
     updateNoteEl.innerHTML = `Note: Calendar data is updated manually. Last update: <u>${lastUpdateTime}</u>`;
 });
