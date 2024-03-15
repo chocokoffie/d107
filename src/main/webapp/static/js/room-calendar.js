@@ -128,11 +128,6 @@ $(document).ready(async function () {
                 lecturerEl.innerHTML = eventLecturers[index];
                 lecturersDivEl.appendChild(lecturerEl);
             }
-            // eventLecturers.splice(0, lecturersShown).forEach(function (lecturer) {
-            //     let lecturerEl = document.createElement("i");
-            //     lecturerEl.innerHTML = lecturer;
-            //     lecturersDivEl.appendChild(lecturerEl);
-            // });
             // If needed, notify that there are more lecturers not shown
             if (lecturersShown < eventLecturers.length) {
                 let moreLecturersEl = document.createElement("i");

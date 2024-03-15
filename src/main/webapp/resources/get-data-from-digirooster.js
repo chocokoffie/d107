@@ -93,6 +93,19 @@ function createFullCalendarEventObject(item) {
     }
 }
 
+function saveEvent(_, eventData) {
+    // If the event was already saved, skip this iteration, otherwise save it
+    if ( savedEventIds.includes(eventData["Id"]) ) { return }
+
+    // Create FullCalendar compatible object and save the event
+    let fullCalendarEvent = createFullCalendarEventObject(eventData);
+    savedEventIds.push(eventData["Id"])
+    allBinGroupEvents.push(fullCalendarEvent);
+    if ( binRoomIds.some(roomId => fullCalendarEvent.extendedProps.rooms.includes(roomId)) ) {
+        onlyBinRoomEvents.push(fullCalendarEvent);
+    }
+}
+
 function createResponseObject(eventItems) {
     let timeNow = new Date();
     timeNow.setHours(timeNow.getHours() + 1);
@@ -132,27 +145,8 @@ let allBinGroupEvents = [];
 let onlyBinRoomEvents = [];
 let savedEventIds = [];
 
-$.each(await getEventDataForGroups(binGroups), function (_, eventData) {
-    let fullCalendarEvent = createFullCalendarEventObject(eventData);
-    savedEventIds.push(eventData["Id"])
-    allBinGroupEvents.push(fullCalendarEvent);
-    if ( binRoomIds.some(roomId => fullCalendarEvent.extendedProps.rooms.includes(roomId)) ) {
-        onlyBinRoomEvents.push(fullCalendarEvent);
-    }
-});
-
-$.each(await getEventDataForLecturers(binLecturerIds), function (_, eventData) {
-    // If the event was already saved skip this iteration
-    if ( savedEventIds.includes(eventData["Id"]) ) { return }
-
-    // Create FullCalendar compatible object and save the event
-    let fullCalendarEvent = createFullCalendarEventObject(eventData);
-    savedEventIds.push(eventData["Id"])
-    allBinGroupEvents.push(fullCalendarEvent);
-    if ( binRoomIds.some(roomId => fullCalendarEvent.extendedProps.rooms.includes(roomId)) ) {
-        onlyBinRoomEvents.push(fullCalendarEvent);
-    }
-});
+$.each(await getEventDataForGroups(binGroups), saveEvent);
+$.each(await getEventDataForLecturers(binLecturerIds), saveEvent);
 
 // download(JSON.stringify(createResponseObject(allBinGroupEvents)), "all-bin-group-calendar-events.json", "text/plain");
 download(JSON.stringify(createResponseObject(onlyBinRoomEvents)), "only-bin-room-calendar-events.json", "text/plain");
