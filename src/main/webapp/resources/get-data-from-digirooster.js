@@ -93,12 +93,21 @@ function createFullCalendarEventObject(item) {
     }
 }
 
-function saveEvent(_, eventData) {
+function saveEvent(eventData, lecturerEvent) {
     // If the event was already saved, skip this iteration, otherwise save it
     if ( savedEventIds.includes(eventData["Id"]) ) { return }
 
-    // Create FullCalendar compatible object and save the event
+    // Create FullCalendar compatible object and set custom properties
     let fullCalendarEvent = createFullCalendarEventObject(eventData);
+    if ( lecturerEvent ) {
+        fullCalendarEvent["backgroundColor"] = "#464646"; fullCalendarEvent["borderColor"] = "#464646"
+    }
+    let examSubstrings = ["Exam kw", "tent kw", "hert kw", " Resit ", " resit ", "-TOETS-"];
+    if ( examSubstrings.some(substring => eventData["Name"].includes(substring)) ) {
+        fullCalendarEvent["backgroundColor"] = "#800000"; fullCalendarEvent["borderColor"] = "#800000"
+    }
+
+    // Save the event
     savedEventIds.push(eventData["Id"])
     allBinGroupEvents.push(fullCalendarEvent);
     if ( binRoomIds.some(roomId => fullCalendarEvent.extendedProps.rooms.includes(roomId)) ) {
@@ -145,8 +154,8 @@ let allBinGroupEvents = [];
 let onlyBinRoomEvents = [];
 let savedEventIds = [];
 
-$.each(await getEventDataForGroups(binGroups), saveEvent);
-$.each(await getEventDataForLecturers(binLecturerIds), saveEvent);
+$.each(await getEventDataForGroups(binGroups), function (_, eventData) { saveEvent(eventData, false) });
+$.each(await getEventDataForLecturers(binLecturerIds), function (_, eventData) { saveEvent(eventData, true) });
 
 // download(JSON.stringify(createResponseObject(allBinGroupEvents)), "all-bin-group-calendar-events.json", "text/plain");
 download(JSON.stringify(createResponseObject(onlyBinRoomEvents)), "only-bin-room-calendar-events.json", "text/plain");
