@@ -40,11 +40,12 @@ async function doRequest(requestUrl, requestData) {
     });
 }
 
-async function getEventDataForGroups(groups) {
-    // Basic request information
-    const baseURL = "https://digirooster.hanze.nl/API/Schedule/Group/";
+
+async function sendDigiroosterRequest(urlPath, year) {
+    const baseURL = "https://digirooster.hanze.nl/API/Schedule/";
     const requestData = {
         sources: ["2", "1"],
+        year: year,
         schoolId: "14",
         rangeStart: getDateRange().start,
         rangeEnd: getDateRange().end,
@@ -52,18 +53,17 @@ async function getEventDataForGroups(groups) {
         includePersonal: false,
         includeConnectingRoomInfo: true
     };
+    return await doRequest(baseURL + urlPath, requestData);
+}
 
-    // Request items for each group and add to allItems
-    let allItems = [];
-    await Promise.all(Object.values(groups).map(async (groupInfo) => {
-        // Prepare request URL and data
-        let requestUrl = baseURL + groupInfo["id"];
-        requestData.year = groupInfo["year"];
-        // Perform request and add items to allItems
-        const groupsItems = await doRequest(requestUrl, requestData);
-        allItems.push(...groupsItems);
+async function getEventDataForGroups(groups) {
+    let allEvents = [];
+    await Promise.all(groups.map(async (groupInfo) => {
+        let urlPath = `Group/${groupInfo["id"]}`;
+        const events = await sendDigiroosterRequest(urlPath, groupInfo["year"]);
+        allEvents.push(...events);
     }));
-    return allItems;
+    return allEvents;
 }
 
 function createFullCalendarEventObject(item) {
@@ -74,7 +74,9 @@ function createFullCalendarEventObject(item) {
         extendedProps: {
             groups: item["Subgroups"].map(({Name}) => Name),
             rooms: item["Rooms"].map(({Id}) => Id),
-            lecturers: item["Lecturers"].map(entry => (`${entry["Description"].replace(/(, )$/, "")} (${entry["Code"]})`)),
+            lecturers: item["Lecturers"].map(
+                lecturer => (`${lecturer["Description"].replace(/(, )$/, "")} (${lecturer["Code"]})`)
+            ),
         },
     }
 }
@@ -100,15 +102,15 @@ function download(content, fileName, contentType) {
 // =====================================================================================================
 // ============================================ MAIN ===================================================
 // =====================================================================================================
-const groupList = {
-    BFV1: {year: 1, id: "10763"}, // Bioinformatics Year 1
-    BFV2: {year: 2, id: "10762"}, // Bioinformatics Year 2
-    BFV3: {year: 3, id: "10768"}, // Bioinformatics Year 3
-    BFVB3: {year: 3, id: "10197"}, // Minor Bio-Informatica
-    BFVF3: {year: 3, id: "10143"}, // Minor Voeding en Gezondheid
-    DSLSR1: {year: 1, id: "10627"}, // Master Data Science for Life Sciences Year 1
-    DSLSR2: {year: 1, id: "14198"}, // Master Data Science for Life Sciences Year 2
-};
+const binGroups = [
+    {year: 1, id: 10763},  // BFV1: Bioinformatics Year 1
+    {year: 2, id: 10762},  // BFV2: Bioinformatics Year 2
+    {year: 3, id: 10768},  // BFV3: Bioinformatics Year 3
+    {year: 3, id: 10197},  // BFVB3: Minor Bio-Informatica
+    {year: 3, id: 10143},  // BFVF3: Minor Voeding en Gezondheid
+    {year: 1, id: 10627},  // DSLSR1: Master Data Science for Life Sciences Year 1
+    {year: 1, id: 14198},  // DSLSR2: Master Data Science for Life Sciences Year 2
+];
 const binRoomIds = [11367, 11368, 11388, 11398, 11399];
 //                  D1.07, D1.08, H1.122,H1.86, H1.88A
 
@@ -116,7 +118,7 @@ let allBinGroupEvents = [];
 let onlyBinRoomEvents = [];
 let amountOfWeeks = 8;
 
-$.each(await getEventDataForGroups(groupList), function (index, eventData) {
+$.each(await getEventDataForGroups(binGroups), function (index, eventData) {
     let fullCalendarEvent = createFullCalendarEventObject(eventData);
     allBinGroupEvents.push(fullCalendarEvent);
 
