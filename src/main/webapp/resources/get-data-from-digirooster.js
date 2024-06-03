@@ -107,7 +107,7 @@ function saveEvent(eventData, lecturerEvent) {
     if ( lecturerEvent ) {
         fullCalendarEvent["backgroundColor"] = "#464646"; fullCalendarEvent["borderColor"] = "#464646"
     }
-    let examSubstrings = ["Exam kw", "tent kw", "hert kw", " Resit ", " resit ", "-TOETS-"];
+    let examSubstrings = ["Exam kw", "tent kw", "hert kw", " Resit ", " resit ", "-TOETS-", "tentamen", "bezem", "BFVH19DAVUR2"];
     if ( examSubstrings.some(substring => eventData["Name"].includes(substring)) ) {
         fullCalendarEvent["backgroundColor"] = "#800000"; fullCalendarEvent["borderColor"] = "#800000"
     }
