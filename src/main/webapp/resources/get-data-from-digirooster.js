@@ -84,7 +84,12 @@ function createFullCalendarEventObject(item) {
         start: item["Start"],
         end: item["End"],
         extendedProps: {
-            groups: item["Subgroups"].map(({Name}) => Name),
+            groups: item["Subgroups"].map(({Name}) => {
+                if (renameGroups[Name]) {
+                    return renameGroups[Name];
+                }
+                return Name;
+            }),
             rooms: item["Rooms"].map(({Id}) => Id),
             lecturers: item["Lecturers"].map(
                 lecturer => (`${lecturer["Description"].replace(/(, )$/, "")} (${lecturer["Code"]})`)
@@ -137,14 +142,20 @@ function download(content, fileName, contentType) {
 // ============================================ MAIN ===================================================
 // =====================================================================================================
 const binGroups = [
-    {year: 1, id: 10763},  // BFV1:   Bioinformatics Year 1
-    {year: 2, id: 10762},  // BFV2:   Bioinformatics Year 2
-    {year: 3, id: 10768},  // BFV3:   Bioinformatics Year 3
-    {year: 3, id: 10197},  // BFVB3:  Minor Bio-Informatica
-    {year: 3, id: 10143},  // BFVF3:  Minor Voeding en Gezondheid
-    {year: 1, id: 10627},  // DSLSR1: Master Data Science for Life Sciences Year 1
-    {year: 1, id: 14198},  // DSLSR2: Master Data Science for Life Sciences Year 2
+    {year: 1, id: 10763},  // BFV1:             Bioinformatics Year 1
+    {year: 1, id: 14414},  // LSVX23PYTON:      Introductie programmeren in Python
+    {year: 1, id: 14415},  // LSVX23OCTAVEMATL: Programmeren in Octave/Matlab
+    {year: 2, id: 10762},  // BFV2:             Bioinformatics Year 2
+    {year: 3, id: 10768},  // BFV3:             Bioinformatics Year 3
+    {year: 3, id: 10197},  // BFVB3:            Minor Bio-Informatica
+    {year: 3, id: 10143},  // BFVF3:            Minor Voeding en Gezondheid
+    {year: 1, id: 10627},  // DSLSR1:           Master Data Science for Life Sciences Year 1
+    {year: 1, id: 14198},  // DSLSR2:           Master Data Science for Life Sciences Year 2
 ];
+const renameGroups = {
+    "Introductie programmeren in Python": "LSVX23PYTON",
+    "Programmeren in Octave/Matlab": "LSVX23OCTAVEMATL",
+};
 const binLecturerIds = [564,  457,  21257, 947,  519,  63,   296,  19886, 242,  1043, 25,   818,  19806, 1066, 1000, 2104, 1106, 310,  62]
 //                      APMA, BABA, BLJA,  BOJP, FEFE, HEMI, KEMC, KRPE,  LADR, LUMF, NASA, NOMI, OLLO,  PARN, POWE, VEID, WATS, WERD, WIBA
 const binRoomIds = [11367, 11368, 11388, 11398, 11399];

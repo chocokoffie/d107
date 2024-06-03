@@ -11,12 +11,10 @@ const myTimeFormat = {
 }
 const groupFullNames = {
     "BFV1": "Bioinformatics Year 1",
-    // "BFV1 gr1": "Bioinformatics Elective Module Lab Skills",
-    // "BFV1 gr2": "Bioinformatics Elective Module Octave",
+    "LSVX23PYTON": "Keuzemodule: Introductie programmeren in Python",
+    "LSVX23OCTAVEMATL": "Keuzemodule: Programmeren in Octave/MATLAB",
     "BFV2": "Bioinformatics Year 2",
     "BFV3": "Bioinformatics Year 3",
-    // "BFV3 gr1": "Bioinformatics Minor HTHPC",
-    // "BFV3 gr2": "Bioinformatics Minor Application Design",
     "BFVB3": "Minor Bioinformatics for the Life Sciences",
     "BFVF3": "Minor Voeding en Gezondheid",
     "DSLSR1": "Master Data Science for Life Sciences Year 1",
