@@ -11,14 +11,16 @@ const myTimeFormat = {
 }
 const groupFullNames = {
     "BFV1": "Bioinformatics Year 1",
-    "LSVX23PYTON": "Keuzemodule: Introductie programmeren in Python",
-    "LSVX23OCTAVEMATL": "Keuzemodule: Programmeren in Octave/MATLAB",
+    "BFV1 gr1": "Bioinformatics Year 1 [Group 1]",
+    "BFV1 gr2": "Bioinformatics Year 1 [Group 2]",
     "BFV2": "Bioinformatics Year 2",
     "BFV3": "Bioinformatics Year 3",
     "BFVB3": "Minor Bioinformatics for the Life Sciences",
     "BFVF3": "Minor Voeding en Gezondheid",
     "DSLSR1": "Master Data Science for Life Sciences Year 1",
     "DSLSR2": "Master Data Science for Life Sciences Year 2",
+    "LSVX23PYTON": "Keuzemodule: Introductie programmeren in Python",
+    "LSVX23OCTAVEMATL": "Keuzemodule: Programmeren in Octave/MATLAB",
 }
 const binRooms = ["ZP11/D1.07", "ZP11/D1.08", "ZP11/H1.122", "ZP11/H1.86"];
 

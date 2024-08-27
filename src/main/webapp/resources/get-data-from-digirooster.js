@@ -85,6 +85,7 @@ function createFullCalendarEventObject(item) {
         end: item["End"],
         extendedProps: {
             groups: item["Subgroups"].map(({Name}) => {
+                Name = Name.replace(/LC\\/, "");
                 if (renameGroups[Name]) {
                     return renameGroups[Name];
                 }
@@ -142,15 +143,17 @@ function download(content, fileName, contentType) {
 // ============================================ MAIN ===================================================
 // =====================================================================================================
 const binGroups = [
-    {year: 1, id: 10763},  // BFV1:             Bioinformatics Year 1
-    {year: 1, id: 14414},  // LSVX23PYTON:      Introductie programmeren in Python
-    {year: 1, id: 14415},  // LSVX23OCTAVEMATL: Programmeren in Octave/Matlab
-    {year: 2, id: 10762},  // BFV2:             Bioinformatics Year 2
-    {year: 3, id: 10768},  // BFV3:             Bioinformatics Year 3
+    {year: 1, id: 16285},  // BFV1:             Bioinformatics Year 1
+    {year: 1, id: 15365},  // BFV1 gr1          Bioinformatics Year 1 [Group 1]
+    {year: 1, id: 15366},  // BFV1 gr2          Bioinformatics Year 1 [Group 2]
+    {year: 2, id: 15367},  // BFV2:             Bioinformatics Year 2
+    {year: 3, id: 15368},  // BFV3:             Bioinformatics Year 3
     {year: 3, id: 10197},  // BFVB3:            Minor Bio-Informatica
     {year: 3, id: 10143},  // BFVF3:            Minor Voeding en Gezondheid
-    {year: 1, id: 10627},  // DSLSR1:           Master Data Science for Life Sciences Year 1
-    {year: 1, id: 14198},  // DSLSR2:           Master Data Science for Life Sciences Year 2
+    {year: 1, id: 16283},  // DSLSR1:           Master Data Science for Life Sciences Year 1
+    {year: 2, id: 16282},  // DSLSR2:           Master Data Science for Life Sciences Year 2
+    {year: 1, id: 14414},  // LSVX23PYTON:      Introductie programmeren in Python
+    {year: 1, id: 14415},  // LSVX23OCTAVEMATL: Programmeren in Octave/Matlab
 ];
 const renameGroups = {
     "Introductie programmeren in Python": "LSVX23PYTON",
