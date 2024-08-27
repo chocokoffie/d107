@@ -80,7 +80,7 @@ async function getEventDataForLecturers(lecturerIds) {
 
 function createFullCalendarEventObject(item) {
     return {
-        title: item["Name"].replace("&amp;", "& "),
+        title: item["Name"].replace("&amp;", "&"),
         start: item["Start"],
         end: item["End"],
         extendedProps: {
@@ -108,7 +108,19 @@ function saveEvent(eventData, lecturerEvent) {
     if ( lecturerEvent ) {
         fullCalendarEvent["backgroundColor"] = "#464646"; fullCalendarEvent["borderColor"] = "#464646"
     }
-    let examSubstrings = ["Exam kw", "tent kw", "hert kw", " Resit ", " resit ", "-TOETS-", "tentamen", "bezem", "BFVH19DAVUR2"];
+    let examSubstrings = [
+        "Exam kw",
+        "tent kw",
+        "hert kw",
+        "Herkansing",
+        " Resit ",
+        " resit ",
+        "-TOETS-",
+        "tentamen",
+        "bezem",
+        "2023-P4",
+        "Entry Assessment",
+    ];
     if ( examSubstrings.some(substring => eventData["Name"].includes(substring)) ) {
         fullCalendarEvent["backgroundColor"] = "#800000"; fullCalendarEvent["borderColor"] = "#800000"
     }
