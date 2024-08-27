@@ -20,13 +20,7 @@ const groupFullNames = {
     "DSLSR1": "Master Data Science for Life Sciences Year 1",
     "DSLSR2": "Master Data Science for Life Sciences Year 2",
 }
-const binRooms = {
-    11367: "ZP11/D1.07",
-    11368: "ZP11/D1.08",
-    11388: "ZP11/H1.122",
-    11398: "ZP11/H1.86",
-    11399: "ZP11/H1.88A",
-};
+const binRooms = ["ZP11/D1.07", "ZP11/D1.08", "ZP11/H1.122", "ZP11/H1.86"];
 
 $(document).ready(async function () {
     // Get all calendar event and modal elements
@@ -158,8 +152,8 @@ $(document).ready(async function () {
 
             // Rooms
             modalEventRooms.innerHTML = "";
-            for (const roomId of info.event.extendedProps.rooms) {
-                modalEventRooms.innerHTML += `<div>${binRooms[roomId]}</div>`
+            for (const roomName of info.event.extendedProps.rooms) {
+                modalEventRooms.innerHTML += `<div>${roomName}</div>`
             }
         },
     })
@@ -181,10 +175,10 @@ $(document).ready(async function () {
     });
 
     // Add an option for each room
-    for (const [roomId, roomName] of Object.entries(binRooms)) {
+    for (const roomName of binRooms) {
         const option = document.createElement("option");
         option.textContent = roomName;
-        option.value = roomId;
+        option.value = roomName;
         roomSelect.appendChild(option);
     }
 

@@ -90,7 +90,7 @@ function createFullCalendarEventObject(item) {
                 }
                 return Name;
             }),
-            rooms: item["Rooms"].map(({Id}) => Id),
+            rooms: item["Rooms"].map(({Name}) => Name.split(" ", 1)[0]),
             lecturers: item["Lecturers"].map(
                 lecturer => (`${lecturer["Description"].replace(/(, )$/, "")} (${lecturer["Code"]})`)
             ),
@@ -115,7 +115,7 @@ function saveEvent(eventData, lecturerEvent) {
     // Save the event
     savedEventIds.push(eventData["Id"])
     allBinGroupEvents.push(fullCalendarEvent);
-    if ( binRoomIds.some(roomId => fullCalendarEvent.extendedProps.rooms.includes(roomId)) ) {
+    if ( binRoomNames.some(roomName => fullCalendarEvent.extendedProps.rooms.includes(roomName)) ) {
         onlyBinRoomEvents.push(fullCalendarEvent);
     }
 }
@@ -156,10 +156,9 @@ const renameGroups = {
     "Introductie programmeren in Python": "LSVX23PYTON",
     "Programmeren in Octave/Matlab": "LSVX23OCTAVEMATL",
 };
+const binRoomNames = ["ZP11/D1.07", "ZP11/D1.08", "ZP11/H1.122", "ZP11/H1.86"];
 const binLecturerIds = [564,  457,  21257, 947,  519,  63,   296,  19886, 242,  1043, 25,   818,  19806, 1066, 1000, 2104, 1106, 310,  62]
 //                      APMA, BABA, BLJA,  BOJP, FEFE, HEMI, KEMC, KRPE,  LADR, LUMF, NASA, NOMI, OLLO,  PARN, POWE, VEID, WATS, WERD, WIBA
-const binRoomIds = [11367, 11368, 11388, 11398, 11399];
-//                  D1.07, D1.08, H1.122,H1.86, H1.88A
 
 let allBinGroupEvents = [];
 let onlyBinRoomEvents = [];
