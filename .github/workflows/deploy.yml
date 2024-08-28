@@ -1,0 +1,28 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH agent and add the private key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY_DEPLOY }}
+
+      - name: Deploy on VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no dennis@denniswiersma.com << 'EOF'
+          cd /home/dennis/repos/d107
+          git pull origin main
+          /opt/gradle/bin/gradle war
+          sudo docker stop d107 || true
+          sudo docker rm d107 || true
+          sudo docker build -t d107 .
+          sudo docker run --name=d107 -it -d -p 8081:8080 d107
+          EOF
