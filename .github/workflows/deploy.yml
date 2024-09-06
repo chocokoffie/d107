@@ -21,8 +21,8 @@ jobs:
           cd /home/dennis/repos/d107
           git pull origin main
           /opt/gradle/bin/gradle war
-          sudo docker stop d107 || true
-          sudo docker rm d107 || true
+          sudo docker stop d107
+          sudo docker rm d107
           sudo docker build -t d107 .
           sudo docker run --name=d107 -it -d -p 8081:8080 d107
           EOF
