@@ -19,10 +19,27 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no dennis@denniswiersma.com << 'EOF'
           cd /home/dennis/repos/d107
+
+          echo "Pulling latest changes from GitHub"
           git pull origin main
+
+          echo "Building the project"
           /opt/gradle/bin/gradle war
+
+          echo "Stopping container"
           sudo docker stop d107
+          sudo docker ps -a
+
+          echo "Removing container"
           sudo docker rm d107
+          sudo docker ps -a
+
+          echo "Building new container"
           sudo docker build -t d107 .
+
+          echo "Running new container"
           sudo docker run --name=d107 -it -d -p 8081:8080 d107
+
+          echo "Veryfing container is running"
+          sudo docker ps
           EOF
