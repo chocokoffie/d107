@@ -118,8 +118,12 @@ function saveEvent(eventData, lecturerEvent) {
         "-TOETS-",
         "tentamen",
         "bezem",
-        "2023-P4",
         "Entry Assessment",
+        "\\Tent ",
+        "\\Toets ",
+        "\\Her ",
+        "\\Herk ",
+        "\\Resit ",
     ];
     if ( examSubstrings.some(substring => eventData["Name"].includes(substring)) ) {
         fullCalendarEvent["backgroundColor"] = "#800000"; fullCalendarEvent["borderColor"] = "#800000"
@@ -160,8 +164,8 @@ const binGroups = [
     {year: 1, id: 15366},  // BFV1 gr2          Bioinformatics Year 1 [Group 2]
     {year: 2, id: 15367},  // BFV2:             Bioinformatics Year 2
     {year: 3, id: 15368},  // BFV3:             Bioinformatics Year 3
-    {year: 3, id: 10197},  // BFVB3:            Minor Bio-Informatica
-    {year: 3, id: 10143},  // BFVF3:            Minor Voeding en Gezondheid
+    {year: 3, id: 16956},  // BFVB3:            Minor Bio-Informatica
+    {year: 3, id: 17084},  // BFVF3:            Minor Voeding en Gezondheid
     {year: 1, id: 16283},  // DSLSR1:           Master Data Science for Life Sciences Year 1
     {year: 2, id: 16282},  // DSLSR2:           Master Data Science for Life Sciences Year 2
     {year: 1, id: 14414},  // LSVX23PYTON:      Introductie programmeren in Python
