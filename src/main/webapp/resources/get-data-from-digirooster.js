@@ -119,11 +119,11 @@ function saveEvent(eventData, lecturerEvent) {
         "tentamen",
         "bezem",
         "Entry Assessment",
-        "\\Tent ",
-        "\\Toets ",
-        "\\Her ",
-        "\\Herk ",
-        "\\Resit ",
+        "Tent ",
+        "Toets ",
+        "Her ",
+        "Herk ",
+        "Resit ",
     ];
     if ( examSubstrings.some(substring => eventData["Name"].includes(substring)) ) {
         fullCalendarEvent["backgroundColor"] = "#800000"; fullCalendarEvent["borderColor"] = "#800000"
